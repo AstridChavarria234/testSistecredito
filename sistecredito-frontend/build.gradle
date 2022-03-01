@@ -1,0 +1,93 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "io.freefair.gradle:lombok-plugin:5.0.0-rc6"
+        classpath "net.serenity-bdd:serenity-gradle-plugin:2.2.0"
+        classpath "net.serenity-bdd:serenity-single-page-report:2.2.0"
+        classpath "gradle.plugin.com.github.sherter.google-java-format:google-java-format-gradle-plugin:0.8"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.8"
+        classpath "org.hibernate:hibernate-core:5.4.18.Final"
+    }
+}
+
+plugins {
+    id "io.freefair.lombok" version "5.0.0-rc6"
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: "io.freefair.lombok"
+apply plugin: 'net.serenity-bdd.aggregator'
+apply plugin: 'com.github.sherter.google-java-format'
+apply plugin: 'org.sonarqube'
+
+group 'co.com.sistecredito.certification.falabella'
+version currentVersion
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    jcenter()
+}
+
+ext {
+    serenityCoreVersion = '2.2.0'
+    serenityCucumberVersion = '2.2.0'
+    junitVersion = '4.12'
+    jacksonVersion = '2.10.3'
+}
+
+serenity {
+    reports = ["single-page-html"]
+}
+
+dependencies {
+    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+    implementation 'org.apache.logging.log4j:log4j-api:2.11.1'
+    implementation 'org.apache.logging.log4j:log4j-core:2.11.1'
+    implementation group: 'com.oracle.ojdbc', name: 'ojdbc8', version: '19.3.0.0'
+    compile("org.hibernate:hibernate-core:5.4.18.Final")
+    compile("org.hibernate:hibernate-entitymanager:5.4.18.Final")
+    compile("org.hibernate:hibernate-ehcache:5.4.18.Final")
+    implementation group: 'com.oracle.ojdbc', name: 'ojdbc8', version: '19.3.0.0'
+    implementation "net.serenity-bdd:serenity-core:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-screenplay:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-screenplay-rest:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-screenplay-webdriver:${serenityCoreVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}",
+            "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}",
+            "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
+    testImplementation "net.serenity-bdd:serenity-cucumber5:${serenityCucumberVersion}",
+            "junit:junit:${junitVersion}",
+            "org.hamcrest:hamcrest-all:1.3"
+}
+
+test {
+    maxParallelForks = Runtime.runtime.availableProcessors()
+}
+
+wrapper {
+    gradleVersion = '6.5'
+}
+
+tasks.withType(Test) {
+    maxParallelForks = Runtime.runtime.availableProcessors()
+}
+
+compileJava.dependsOn 'googleJavaFormat'
+gradle.startParameter.continueOnFailure = true
+test.finalizedBy(aggregate, reports)
