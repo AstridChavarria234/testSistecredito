@@ -1,0 +1,4 @@
+src/test/java/co/com/sistecredito/certification/dafiti/runners/AddProduct.java,1646106590272993000,420,FORMATTED
+src/main/java/co/com/sistecredito/dafiti/tasks/RegisterAccount.java,1646106915862015000,645,FORMATTED
+src/main/java/co/com/sistecredito/dafiti/userinterfaces/ChooseProduct.java,1646108339813897000,296,FORMATTED
+src/test/java/co/com/sistecredito/certification/dafiti/stepdefinitions/AddProductStepDefinition.java,1646106915882522000,694,FORMATTED
