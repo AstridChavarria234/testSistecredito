@@ -1,4 +1,7 @@
 Feature: Buy product in webSite
+  Me as a client of dafiti
+  I want to buy a product
+  to give a gift
 
   Scenario Outline: Add product to shopping cart
     Given that a customer wants to buy a product
