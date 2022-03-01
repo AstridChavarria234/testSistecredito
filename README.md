@@ -14,3 +14,5 @@ Para la ejecucion del proyecto  intellij/sistecreditodafiti:
 5. Instalar plugin gherkin 
 6. Appium
 7. Android Studio
+
+Nota : El proyecto android/sistecreditodafiti tiene la configuracion inicial del device en el que se realizo la ejecucion
